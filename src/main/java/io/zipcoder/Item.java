@@ -1,12 +1,8 @@
 package io.zipcoder;
 
 import java.util.Comparator;
-import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
-import java.util.function.ToLongFunction;
 
-public class Item implements Comparator <Item>{
+public class Item  implements Comparable<Item> {
     private String name;
     private Double price;
     private String type;
@@ -56,42 +52,7 @@ public class Item implements Comparator <Item>{
     }
 
     @Override
-    public int compare(Item o1, Item o2) {
+    public int compareTo(Item o) {
         return 0;
-    }
-
-    @Override
-    public Comparator<Item> reversed() {
-        return null;
-    }
-
-    @Override
-    public Comparator<Item> thenComparing(Comparator<? super Item> other) {
-        return null;
-    }
-
-    @Override
-    public <U> Comparator<Item> thenComparing(Function<? super Item, ? extends U> keyExtractor, Comparator<? super U> keyComparator) {
-        return null;
-    }
-
-    @Override
-    public <U extends Comparable<? super U>> Comparator<Item> thenComparing(Function<? super Item, ? extends U> keyExtractor) {
-        return null;
-    }
-
-    @Override
-    public Comparator<Item> thenComparingInt(ToIntFunction<? super Item> keyExtractor) {
-        return null;
-    }
-
-    @Override
-    public Comparator<Item> thenComparingLong(ToLongFunction<? super Item> keyExtractor) {
-        return null;
-    }
-
-    @Override
-    public Comparator<Item> thenComparingDouble(ToDoubleFunction<? super Item> keyExtractor) {
-        return null;
     }
 }

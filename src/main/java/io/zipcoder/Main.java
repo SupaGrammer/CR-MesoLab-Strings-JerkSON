@@ -1,20 +1,23 @@
 package io.zipcoder;
 
 import org.apache.commons.io.IOUtils;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+
+import java.util.*;
 
 public class Main {
 
-    private String readRawDataToString() throws Exception{
+    private String readRawDataToString() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
         return IOUtils.toString(classLoader.getResourceAsStream("RawData.txt"));
     }
 
-    public static void main(String[] args) throws Exception {
-        String output = (new Main()).readRawDataToString();
+    public static List<Item> getItems() {
+        String output = null;
+        try {
+            output = (new Main()).readRawDataToString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         ItemParser parser = new ItemParser();
 
@@ -22,9 +25,24 @@ public class Main {
 
         ArrayList<Item> items = new ArrayList<>();
         for (String item : dataStringArray) {
-            items.add(parser.parseStringIntoItem(item));
+            try {
+                items.add(parser.parseStringIntoItem(item));
+            } catch (ItemParseException e) {
+                e.printStackTrace();
+            }
         }
+        return items;
+    }
 
+    public static void main(String[] args) throws Exception {
+        List<Item> items = getItems();
+        String itemsAsString = Arrays.toString(items.toArray());
+        System.out.println(itemsAsString);
+    }
+
+
+    public static void myTest() {
+        List<Item> items = getItems();
         int errorCounter = 0;
         Integer milkCounter = 0;
 
@@ -45,28 +63,23 @@ public class Main {
             System.out.println("==============================");
             System.out.println("Name: " + name.getKey() + " Appears: " + name.getValue() + " times");
             System.out.println("------------------------------");
-            for(Map.Entry<String, HashMap<Double, Integer>> namePrice : namePriceMap.entrySet()){
+            for (Map.Entry<String, HashMap<Double, Integer>> namePrice : namePriceMap.entrySet()) {
                 String key = namePrice.getKey();
-                for(Map.Entry<Double,Integer> priceMap : namePrice.getValue().entrySet()){
+                for (Map.Entry<Double, Integer> priceMap : namePrice.getValue().entrySet()) {
                     System.out.println("Price: " + priceMap.getKey() + " Appears: " + priceMap.getValue());
                 }
-
-
             }
         }
         System.out.println("------------------------------");
         System.out.println("Errors: " + errorCounter);
-
-
-
     }
 
 
-    private static HashMap<String, HashMap<Double, Integer>> getNamePriceMap(ArrayList<Item> items, String itemName) {
+    private static HashMap<String, HashMap<Double, Integer>> getNamePriceMap(List<Item> items, String itemName) {
         HashMap<String, HashMap<Double, Integer>> namePriceMap = new HashMap<>();
-        ArrayList <Item> nameList = new ArrayList<>();
+        ArrayList<Item> nameList = new ArrayList<>();
         for (Item item : items) {
-            if(item.getName().equals(itemName)){
+            if (item.getName().equals(itemName)) {
                 nameList.add(item);
             }
         }
@@ -74,7 +87,7 @@ public class Main {
         return namePriceMap;
     }
 
-    private static HashMap<Double, Integer> getPriceMap(ArrayList<Item> items) {
+    private static HashMap<Double, Integer> getPriceMap(List<Item> items) {
         HashMap<Double, Integer> map = new HashMap<>();
         for (Item item : items) {
             if (map.containsKey(item.getPrice())) {
@@ -88,7 +101,7 @@ public class Main {
         return map;
     }
 
-    private static HashMap<String, Integer> getNameMap(ArrayList<Item> items) {
+    private static HashMap<String, Integer> getNameMap(List<Item> items) {
         HashMap<String, Integer> map = new HashMap<>();
         for (Item item : items) {
             if (map.containsKey(item.getName())) {
