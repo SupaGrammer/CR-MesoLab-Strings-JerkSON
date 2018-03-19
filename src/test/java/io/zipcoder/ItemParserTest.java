@@ -26,6 +26,7 @@ public class ItemParserTest {
         itemParser = new ItemParser();
     }
 
+
     @Test
     public void parseRawDataIntoStringArrayTest(){
         Integer expectedArraySize = 3;
@@ -58,5 +59,17 @@ public class ItemParserTest {
         Integer expected = 4;
         Integer actual = itemParser.findKeyValuePairsInRawItemData(rawSingleItemIrregularSeperatorSample).size();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void formatStringTest() throws ItemParseException {
+        //Given
+        String expected = "This segment is ok";
+
+        //When
+        String actual = itemParser.formatString("");
+
+        //Then
+        assertEquals(expected,actual);
     }
 }
